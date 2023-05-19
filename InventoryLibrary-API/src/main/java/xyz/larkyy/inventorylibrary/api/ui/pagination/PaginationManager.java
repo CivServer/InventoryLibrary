@@ -56,9 +56,6 @@ public class PaginationManager {
     public void open() {
         open(page, false);
     }
-    public void open(boolean ignoreHistory) {
-        open(page, ignoreHistory);
-    }
 
     public void open(int page, boolean ignoreHistory) {
         if (page >= pages.size()) {
@@ -105,7 +102,7 @@ public class PaginationManager {
             }
             click = event -> {};
         } else {
-            click = event -> open(page);
+            click = event -> open(page, false);
         }
         var pageBtn = new PageButton(button, click);
         menu.addComponent(pageBtn);
