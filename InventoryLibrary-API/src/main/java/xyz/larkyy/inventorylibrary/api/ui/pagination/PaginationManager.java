@@ -54,10 +54,13 @@ public class PaginationManager {
     }
 
     public void open() {
-        open(page);
+        open(page, false);
+    }
+    public void open(boolean ignoreHistory) {
+        open(page, ignoreHistory);
     }
 
-    public void open(int page) {
+    public void open(int page, boolean ignoreHistory) {
         if (page >= pages.size()) {
             return;
         }

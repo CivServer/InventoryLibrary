@@ -1,6 +1,8 @@
 package xyz.larkyy.inventorylibrary.api.ui.history;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import xyz.larkyy.inventorylibrary.api.InventoryHandler;
 import xyz.larkyy.inventorylibrary.api.ui.rendered.RenderedMenu;
 
 import java.util.EmptyStackException;
@@ -20,13 +22,37 @@ public class MenuHistory {
     }
 
     public void openPrevious() {
-        try {
-            var menu = history.pop();
-            menu.open(player, true);
-        } catch (EmptyStackException ignored) {
-            var menu = history.peek();
-            menu.close(player);
-        }
+        JavaPlugin plugin = InventoryHandler.getInstance().getPlugin();
+
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+
+            try {
+                if (this.history.isEmpty()) {
+                    player.closeInventory();
+                    return;
+                }
+
+                var menu = history.pop();
+                if (menu == null) {
+                    player.closeInventory();
+                    return;
+                }
+                menu.open(player, true);
+            } catch (EmptyStackException ignored) {
+                if (this.history.isEmpty()) {
+                    player.closeInventory();
+                    return;
+                }
+
+                var menu = history.peek();
+                if (menu != null) {
+                    menu.close(player);
+                    return;
+                }
+
+                player.closeInventory();
+            }
+        });
     }
 
     public boolean hasPreviousMenu() {
