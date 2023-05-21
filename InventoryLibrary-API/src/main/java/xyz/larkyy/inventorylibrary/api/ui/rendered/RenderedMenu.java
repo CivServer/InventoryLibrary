@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.inventorylibrary.api.InventoryHandler;
 import xyz.larkyy.inventorylibrary.api.ui.SlotSelection;
@@ -363,7 +364,9 @@ public class RenderedMenu implements InventoryHolder {
     }
 
     public void close(Player player) {
-        player.closeInventory();
+        JavaPlugin plugin = InventoryHandler.getInstance().getPlugin();
+
+        plugin.getServer().getScheduler().runTask(plugin, player::closeInventory);
     }
 
     public void handleClose(Player player) {
