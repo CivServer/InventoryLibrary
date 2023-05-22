@@ -68,7 +68,7 @@ public class PaginationManager {
         this.page = page;
         var pageMenu = pages.get(page);
         handlePageButtons(pageMenu);
-        pageMenu.open(player,true);
+        pageMenu.open(player,ignoreHistory);
     }
 
     public RenderedButton getNextPageComponent() {
