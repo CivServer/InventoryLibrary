@@ -68,12 +68,15 @@ public class InventoryHandler {
             Closes all opened custom inventories
          */
     public void closeAll() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            var holder = getRenderHandler().getOpenedMenu(player).getHolder();
-            if (holder instanceof RenderedMenu renderedMenu) {
-                player.closeInventory();
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                var holder = getRenderHandler().getOpenedMenu(player).getHolder();
+                if (holder instanceof RenderedMenu renderedMenu) {
+                    player.closeInventory();
+                }
             }
-        }
+        });
     }
 
     public void addCachedInventoryId(UUID uuid, int id) {
