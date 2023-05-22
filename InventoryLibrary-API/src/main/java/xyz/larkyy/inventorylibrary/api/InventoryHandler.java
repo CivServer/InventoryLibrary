@@ -126,27 +126,24 @@ public class InventoryHandler {
 
     private void registerListeners() {
         packetListener.register(WrappedServerboundContainerClickPacket.class, event -> {
-            var player = event.getPlayer();
+            this.plugin.getServer().getScheduler().runTask(plugin, () -> {
+                var player = event.getPlayer();
 
-            if (!isCustomInventoryId(player.getUniqueId(),event.getContainerId())) {
-                return;
-            }
-            var openedMenu = getOpenedMenu(player);
-            if (openedMenu == null) {
-                return;
-            }
-
-            var bukkitEvent = new CustomInventoryClickEvent(openedMenu,player,event.getClickType(),event.getSlotNum(),
-                    event.getChangedSlots(),event.getCarriedItem());
-            if (openedMenu.interact(bukkitEvent)) {
-                event.setCancelled(true);
-            }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getPluginManager().callEvent(bukkitEvent);
+                if (!isCustomInventoryId(player.getUniqueId(), event.getContainerId())) {
+                    return;
                 }
-            }.runTask(plugin);
+                var openedMenu = getOpenedMenu(player);
+                if (openedMenu == null) {
+                    return;
+                }
+
+                var bukkitEvent = new CustomInventoryClickEvent(openedMenu, player, event.getClickType(), event.getSlotNum(),
+                        event.getChangedSlots(), event.getCarriedItem());
+                if (openedMenu.interact(bukkitEvent)) {
+                    event.setCancelled(true);
+                }
+                Bukkit.getPluginManager().callEvent(bukkitEvent);
+            });
         });
         /*
         packetListener.register(WrappedClientboundContainerSetContentPacket.class, event -> {
