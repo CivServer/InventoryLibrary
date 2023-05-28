@@ -106,7 +106,7 @@ public class PaginationManager {
             }
             click = event -> {};
         } else {
-            click = event -> open(page, false);
+            click = event -> open(page, true);
         }
         var pageBtn = new PageButton(button, click);
         menu.addComponent(pageBtn);
